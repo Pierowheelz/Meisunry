@@ -129,7 +129,7 @@ function setupImagesInGrid() {
     handle_resort(allFiles);
     loadImages(allFiles);
   
-    setTimeout(() => { updateGridAndSpacing(); grid.layout(); }, 100);
+    setTimeout(() => { updateGridAndSpacing(); grid.layout(); }, 200);
   }).catch(err => {
     console.error('Error reading image folder:', err);
   });

@@ -4,16 +4,26 @@
   "description": "A masonry image viewer",
   "main": "./mains/main.js",
   "scripts": {
-    "start": "electron ./mains/main.js"
+    "start": "electron ./mains/main.js",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "author": "Jonah Grimm",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^26.1.0",
-    "electron-builder": "^24.6.3"
+    "@electron-forge/cli": "^7.5.0",
+    "@electron-forge/maker-deb": "^7.5.0",
+    "@electron-forge/maker-rpm": "^7.5.0",
+    "@electron-forge/maker-squirrel": "^7.5.0",
+    "@electron-forge/maker-zip": "^7.5.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.5.0",
+    "@electron-forge/plugin-fuses": "^7.5.0",
+    "@electron/fuses": "^1.8.0",
+    "electron": "^26.1.0"
   },
   "dependencies": {
     "electron-context-menu": "^3.6.1",
+    "electron-squirrel-startup": "^1.0.1",
     "masonry-layout": "^4.2.2",
     "panzoom": "^9.4.3",
     "trash": "^8.1.1"
@@ -36,6 +46,9 @@
   "build": {
     "win": {
       "icon": "/app-icons/logo.ico"
+    },
+    "darwin": {
+      "icon": "/app-icons/logo.png"
     },
     "asar": false
   }

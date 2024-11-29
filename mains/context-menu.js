@@ -2,8 +2,8 @@ const contextMenu = require('electron-context-menu');
 const { app, clipboard, dialog, shell } = require('electron');
 const fs = require('fs');
 const { loadFolder, saveAppData, loadData, loadIndex, refreshGrid } = require('./main-functions');
-let trash;
-import('trash').then((trashModule) => { trash = trashModule.default || trashModule; });
+// let trash;
+// import('trash').then((trashModule) => { trash = trashModule.default ?? trashModule; });
 
 contextMenu({
   prepend: (defaultActions, parameters, browserWindow) => { 
@@ -285,7 +285,7 @@ contextMenu({
     type: 'checkbox',
     click: () => {
       // Action to copy the image path to clipboard
-      const imagePath = parameters.srcURL.replace("file:///", "").replace(/%20/g, ' '); // Get the image source URL
+      const imagePath = parameters.srcURL.replace("file:///", "/").replace(/%20/g, ' '); // Get the image source URL
       clipboard.writeText(imagePath); // Copy the image path to clipboard
       browserWindow.webContents.send('flash-copied', imagePath); 
     }
@@ -296,17 +296,26 @@ contextMenu({
     type: 'checkbox',
     click: () => {
       // Action to copy the image path to clipboard
-      const imagePath = parameters.srcURL.replace("file:///", "").replace(/%20/g, ' '); // Get the image source URL
+      const imagePath = parameters.srcURL.replace("file:///", "/").replace(/%20/g, ' '); // Get the image source URL
       
       // Check if the file exists before attempting to delete it
       fs.access(imagePath, fs.constants.F_OK, (err) => {
         if (!err) {
           // File exists, proceed with deletion
-          trash([imagePath]);
+          // await trash(imagePath);
+          fs.unlink(imagePath, (err) => {
+            if (err) {
+              alert("An error ocurred deleting the file" + err.message);
+              console.log(err);
+              return;
+            }
+            console.log("File succesfully deleted");
+          });
           browserWindow.webContents.send('deleted-file', imagePath); 
           console.log(`Deleted ${imagePath}`);
         } else {
           console.error('File does not exist or cannot be accessed');
+          console.log(err);
         }
       });
     }
